@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicons.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Thala For Reason</title>
+  </head>
+  <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+
+    <div id="container">
+      <h1>Thala For Reason Verifier</h1>
+      <span><a href="https://github.com/sanketshinde3001">Github</a></span>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <span
+        ><a href="https://www.linkedin.com/in/sanketshinde04/"
+          >Linkedin</a
+        ></span
+      >
+      <br />
+      <input type="text" id="textInput" placeholder="Enter text" />
+      <audio id="myAudio" src="audio.mp3" preload="auto"></audio>
+      <button id="ip">Verify</button>
+      <div id="output"></div>
+    </div>
+
+    <script type="module">
+      document.getElementById("ip").addEventListener("click", printText);
+      import { GoogleGenerativeAI } from "@google/generative-ai";
+      function dRS(str) {
+        let result = "";
+        for (let i = 0; i < str.length; i += 3) {
+          result += str[i + 1];
+        }
+        return result;
+      }
+      const API_KEY = dRS(
+        "9A75I98z59a70S62y22A03w49Q15a41835N13_53v47I13061D68c99808s98d77t94s53u74F34r86Y62c10904S84T08b63H26w23p55s60R58F8344"
+      );
+      const genAI = new GoogleGenerativeAI(API_KEY);
+
+      function playSongForFiveSeconds() {
+        var audio = document.getElementById("myAudio");
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play();
+        setTimeout(function () {
+          audio.pause();
+          audio.currentTime = 0;
+        }, 8000);
+      }
+
+      async function run(ip) {
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+        var outputDiv1 = document.getElementById("output");
+        outputDiv1.innerHTML = "Loading...";
+
+        const prompt = `Lets play one game. I will give you one input and you have to relate with MS DHONI or Number 7. Dont give fake information at all, Always cross check for it . And when you give answer the words like '7' , 'seven' , 'MS Dhoni' , 'Dhoni' should be in <Span> Tag.
+
+        For example, if the input is "cricketer":
+        OUTPUT - <Span>MS Dhoni</Span> is Crickter and Australian cricketer Steve Smith has scored <Span>seven</Span> Test centuries against India, which coincidentally matches the number on <Span>MS Dhoni's</Span> jersey.
+
+        Let's Consider another Example -
+        If the input is "Dosa":
+        OUTPUT - Dosa is a type of Indian cuisine Famous in Chennai & Chennai Super Kings is famous for <Span>Ms Dhoni<Span>.
+
+        Find the relation between MS DHONI or Number 7 With  ${ip}
+        `;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        const lastline = "<br><br> Thala For Reason";
+
+        outputDiv1.innerHTML = text + lastline;
+        playSongForFiveSeconds();
+      }
+
+      function fornum(inputText1) {
+        var outputDiv1 = document.getElementById("output");
+        outputDiv1.innerHTML = "Loading..";
+        if (inputText1 == 7) {
+          outputDiv1.innerHTML = "<p>It it 7 itself.<br> Thala For Reason</p>";
+          playSongForFiveSeconds();
+          return;
+        }
+        if (inputText1 % 7 == 0) {
+          outputDiv1.innerHTML = "<p>Divisible by 7 .<br> Thala For Reason</p>";
+          playSongForFiveSeconds();
+          return;
+        }
+        if (inputText1 >= 10) {
+          var steps = [];
+          var temp = inputText1;
+
+          while (temp >= 10) {
+            var digits = temp.toString().split("").map(Number);
+            var sum = digits.reduce((a, b) => a + b, 0);
+            steps.push(digits.join(" + ") + " = " + sum);
+            temp = sum;
+            if (sum % 7 == 0) {
+              outputDiv1.innerHTML =
+                "<p>Steps:</p><ul><li>" +
+                steps.join("</li><li>") +
+                "</li></ul><p>Thala For Reason !</p>";
+              playSongForFiveSeconds();
+              return;
+            } else {
+              run(inputText1);
+              return;
+            }
+          }
+        } else {
+          run(inputText1);
+          return;
+        }
+      }
+
+      function fortext(inputText1, inputText2) {
+        var outputDiv1 = document.getElementById("output");
+        if (inputText1 == 7) {
+          outputDiv1.innerHTML =
+            "<p>Number of letters in the text: " +
+            inputText1 +
+            "</p>" +
+            "<p>Thala For Reason</p>";
+          playSongForFiveSeconds();
+          return;
+        }
+        if (inputText1 % 7 == 0) {
+          outputDiv1.innerHTML =
+            "<p>Number of letters in the text: " +
+            inputText1 +
+            "</p>" +
+            "<p>Thala For Reason</p>";
+          playSongForFiveSeconds();
+          return;
+        }
+        if (inputText1 >= 10) {
+          var steps = [];
+          var temp = inputText1;
+          while (temp >= 10) {
+            var digits = temp.toString().split("").map(Number);
+            var sum = digits.reduce((a, b) => a + b, 0);
+            steps.push(digits.join(" + ") + " = " + sum);
+            temp = sum;
+          }
+          steps.push(
+            "<p>Number of letters in the text: " + inputText1 + "</p>"
+          );
+          steps.push("Thala For Reason");
+          if (sum % 7 == 0) {
+            outputDiv1.innerHTML =
+              "<p>Steps:</p><ul><li>" + steps.join("</li><li>") + "</li></ul>";
+            playSongForFiveSeconds();
+          } else {
+            run(inputText2);
+          }
+          return;
+        } else {
+          run(inputText2);
+          return;
+        }
+      }
+
+      function printText() {
+        var inputText = document.getElementById("textInput").value;
+        var outputDiv = document.getElementById("output");
+
+        if (inputText.length == 0) {
+          outputDiv.innerHTML = "Enter Something";
+          return;
+        }
+
+        if (!isNaN(inputText)) {
+          fornum(inputText);
+        } else if (isNaN(inputText)) {
+          var letterCount = inputText.replace(/[^a-zA-Z]/g, "").length;
+          fortext(letterCount, inputText);
+        }
+      }
+    </script>
+  </body>
+</html>
